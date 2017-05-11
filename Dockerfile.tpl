@@ -8,8 +8,11 @@ MAINTAINER Marc Trudel <mtrudel@wizcorp.jp>
 
 # System dependencies
 RUN apt-get -qq update \
-      && apt-get -qq install --no-install-recommends sudo libzmq3-dev \
+      && apt-get -qq install --no-install-recommends sudo vim bash-completion libzmq3-dev \
       && apt-get clean all
+
+# Set EDITOR variable (for git)
+ENV EDITOR=vim
 
 # Create an app user to run things from
 RUN useradd -m app && echo "app:app" | chpasswd && adduser app sudo
