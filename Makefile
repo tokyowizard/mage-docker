@@ -2,14 +2,14 @@
 name := stelcheck/mage
 
 # Latest Node version supported
-latest := 7.10.0
+latest := 8.1.2
 
 # Default set of version for `make all`
 versions := \
 	$(latest) \
+	7.10.0 \
 	6.10.3 \
-	5.12.0 \
-	4.8.3
+	5.12.0
 
 # Default version for `make build`
 version := $(latest)

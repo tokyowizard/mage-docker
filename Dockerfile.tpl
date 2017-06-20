@@ -17,6 +17,7 @@ ENV EDITOR=vim
 # Create an app user to run things from
 RUN useradd -m app && echo "app:app" | chpasswd && adduser app sudo
 RUN mkdir /usr/src/app && chown app.app /usr/src/app
+RUN echo "app         ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 USER app
 COPY .bashrc /home/app
 
