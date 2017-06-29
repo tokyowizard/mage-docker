@@ -1,5 +1,5 @@
 # Name of the image
-name := stelcheck/mage
+name := mage/mage
 
 # Latest Node version supported
 latest := 8.1.2
@@ -30,7 +30,7 @@ release-version:
 	docker push $(name):$(version)
 
 git-push:
-	git push origin master
+	git push git@github.com:mage/mage-docker.git master
 
 release: git-push
 	for version in $(versions); do \
