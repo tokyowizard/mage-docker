@@ -2,23 +2,22 @@
 name := mage/mage
 
 # Latest Node version supported
-latest := 8.1.2
+latest := 8.2.1
 
 # Default set of version for `make all`
 versions := \
 	$(latest) \
-	7.10.0 \
-	6.10.3 \
-	5.12.0
+	7.10.1 \
+	6.11.1 \
+	5.12.1 \
+	4.8.4
 
 # Default version for `make build`
 version := $(latest)
 
 build-version:
-	sed "s/^FROM IMAGE/FROM node:$(version)/" Dockerfile.tpl > Dockerfile
-	docker build -t $(name):$(version) .
+	docker build -t $(name):$(version) --build-arg=node_version=$(version) .
 	[[ "$(version)" == "$(latest)" ]] && docker tag $(name):$(version) $(name):latest || true
-	rm Dockerfile
 
 build:
 	for version in $(versions); do \

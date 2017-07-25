@@ -3,16 +3,16 @@
 #
 # Feel free to add or customise the image according to your needs.
 ###
-FROM IMAGE
+ARG node_version=8.2.1
+ARG base_image=node:${node_version}
+
+FROM ${base_image}
 MAINTAINER Marc Trudel <mtrudel@wizcorp.jp>
 
 # System dependencies
 RUN apt-get -qq update \
       && apt-get -qq install --no-install-recommends sudo vim bash-completion libzmq3-dev \
       && apt-get clean all
-
-# Set EDITOR variable (for git)
-ENV EDITOR=vim
 
 # Create an app user to run things from
 RUN useradd -m app && echo "app:app" | chpasswd && adduser app sudo
@@ -22,6 +22,8 @@ USER app
 COPY .bashrc /home/app
 
 # Environment variables
+# Set EDITOR variable (for git)
+ENV EDITOR=vim
 
 # Set working directory (this will get mounted during development)
 WORKDIR /usr/src/app
@@ -30,12 +32,13 @@ WORKDIR /usr/src/app
 ONBUILD ARG node_env=production
 ONBUILD ARG npm_flags
 ONBUILD ARG npm_loglevel=http
-ONBUILD ENV NODE_ENV=$node_env
-ONBUILD ENV NPM_CONFIG_LOGLEVEL=$npm_loglevel
+
+ONBUILD ENV NODE_ENV=${node_env}
+ONBUILD ENV NPM_CONFIG_LOGLEVEL=${npm_loglevel}
 ONBUILD COPY package.json /usr/src/app
-ONBUILD RUN npm install $npm_flags \
+ONBUILD RUN npm install ${npm_flags} \
       && npm cache clean
 ONBUILD COPY . /usr/src/app
 
 # Command to run
-CMD ["npm", "run", "mage"]
+CMD ["node_modules/.bin/mage"]
