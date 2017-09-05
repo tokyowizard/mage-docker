@@ -40,5 +40,8 @@ ONBUILD RUN npm install ${npm_flags} \
       && npm cache clean
 ONBUILD COPY . /usr/src/app
 
+# Stop signal
+STOPSIGNAL SIGTERM
+
 # Command to run
 CMD ["node_modules/.bin/mage"]
