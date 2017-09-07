@@ -2,14 +2,14 @@
 name := mage/mage
 
 # Latest Node version supported
-latest := 8.2.1
+latest := 8.4.0
 
 # Default set of version for `make all`
 versions := \
 	$(latest) \
 	7.10.1 \
-	6.11.1 \
-	5.12.1 \
+	6.11.3 \
+	5.12.0 \
 	4.8.4
 
 # Default version for `make build`

@@ -14,11 +14,26 @@ RUN apt-get -qq update \
       && apt-get -qq install --no-install-recommends sudo vim bash-completion libzmq3-dev \
       && apt-get clean all
 
+# Update NPM
+RUN cd /tmp \
+      && npm install npm@5 \
+      && rm -rf /usr/local/lib/node_modules \
+      && mv node_modules /usr/local/lib && \
+      npm -v
+
 # Create an app user to run things from
 RUN useradd -m app && echo "app:app" | chpasswd && adduser app sudo
+
+# Have the app user own the app folder
 RUN mkdir /usr/src/app && chown app.app /usr/src/app
+
+# Make app user a sudoer
 RUN echo "app         ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+
+# Switch current user to app
 USER app
+
+# Copy custom bashrc file
 COPY .bashrc /home/app
 
 # Environment variables
@@ -36,12 +51,13 @@ ONBUILD ARG npm_loglevel=http
 ONBUILD ENV NODE_ENV=${node_env}
 ONBUILD ENV NPM_CONFIG_LOGLEVEL=${npm_loglevel}
 ONBUILD COPY package.json /usr/src/app
+ONBUILD COPY package-lock.json /usr/src/app
 ONBUILD RUN npm install ${npm_flags} \
-      && npm cache clean
+      && npm cache clean --force
 ONBUILD COPY . /usr/src/app
 
 # Stop signal
 STOPSIGNAL SIGTERM
 
 # Command to run
-CMD ["node_modules/.bin/mage"]
+CMD ["npm", "run", "mage"]
