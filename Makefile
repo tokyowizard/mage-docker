@@ -2,7 +2,7 @@
 name := mage/mage
 
 # Latest Node version supported
-latest := 8.1.2
+latest := 8.8.1
 
 # Default set of version for `make all`
 versions := \
