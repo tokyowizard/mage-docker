@@ -1,6 +1,5 @@
 # Name of the image
-#name := mage/mage
-name := frank/mage-docker
+name := mage/mage
 
 # Default set of version for `make all`
 versions ?= $(shell curl -L -s \
@@ -31,7 +30,7 @@ push-all:
 	done
 
 git-push:
-	git push git@github.com:tokyowizard/mage-docker.git master
+	git push git@github.com:mage/mage-docker.git master
 
 release: git-push
 	for version in $(versions); do \
